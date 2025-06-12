@@ -190,6 +190,65 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<C-v>', '<C-w><C-v>', { desc = 'Split tab vertically' })
 
+local get_relative_path = function()
+  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':~:.')
+  return path
+end
+
+local get_relative_path_with_line = function()
+  local path = get_relative_path()
+  local linenr = vim.api.nvim_win_get_cursor(0)[1]
+  return path .. ':' .. linenr
+end
+
+-- Copy the current file path to the clipboard.
+vim.api.nvim_create_user_command('Path', function()
+  local path = get_relative_path()
+  vim.fn.setreg('+', path)
+  print('Copied: ' .. path)
+end, {})
+
+-- Copy the current file path and line number to the clipboard
+vim.api.nvim_create_user_command('Line', function()
+  local result = get_relative_path_with_line()
+  vim.fn.setreg('+', result)
+  print('Copied: ' .. result)
+end, {})
+
+-- Copy the current file path and line range to the clipboard, formatted for GitHub.
+vim.api.nvim_create_user_command('LineRepo', function(opts)
+  local repo = vim.trim(vim.fn.system "git remote get-url origin | sed -e 's#git@github.com:#https://github.com/#' -e 's/\\.git$//'")
+  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':~:.')
+  -- If the start line is different than 0, use the line range
+  -- Otherwise, use the cursor line
+  local start_line = vim.fn.line "'<"
+  local end_line = vim.fn.line "'>"
+  local line_range = '#L' .. start_line .. '-L' .. end_line
+
+  if opts.range == 0 then
+    line_range = '#L' .. vim.api.nvim_win_get_cursor(0)[1]
+  end
+
+  local branch = vim.trim(vim.fn.system 'git branch --show-current')
+  local result = repo .. '/blob/' .. branch .. '/' .. path .. line_range
+  vim.fn.setreg('+', result)
+  print('Copied: ' .. result)
+end, { range = true })
+
+vim.api.nvim_create_user_command('Test', function()
+  local path = get_relative_path()
+  local result = 'bundle exec testrbl -verbose -I test ' .. path
+  vim.fn.setreg('+', result)
+  print('Copied: ' .. result)
+end, {})
+
+vim.api.nvim_create_user_command('TestLine', function()
+  local path = get_relative_path_with_line()
+  local result = 'bundle exec testrbl -verbose -I test ' .. path
+  vim.fn.setreg('+', result)
+  print('Copied: ' .. result)
+end, {})
+
 -- Keybinds to make tab navigation easier.
 vim.keymap.set('n', '<C-t>', '<cmd>tabnew<CR>', { desc = 'Open new tab' })
 vim.keymap.set('n', '<right>', ':tabnext<CR>', { noremap = true, silent = true })
