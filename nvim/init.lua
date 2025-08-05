@@ -203,11 +203,6 @@ require("lazy").setup({
       end,
     },
 
-    {
-      "mason-org/mason.nvim",
-      opts = {}
-    },
-
     { "neovim/nvim-lspconfig" },
   },
   -- Configure any other settings here. See the documentation for more details.
@@ -220,4 +215,7 @@ require("lazy").setup({
 require("gitsigns").setup({
   current_line_blame = true
 })
+
+# TODO: Fix diagnostic mode
+require("lspconfig").pyright.setup({})
 
