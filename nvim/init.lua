@@ -174,7 +174,7 @@ require("lazy").setup({
       build = ':TSUpdate',
       lazy = false,
       opts = {
-        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'python'},
+        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'query', 'vim', 'vimdoc', 'javascript', 'python'},
         -- Autoinstall languages that are not installed
         auto_install = true,
         highlight = {
@@ -190,6 +190,15 @@ require("lazy").setup({
         require('nvim-treesitter.configs').setup(opts)
       end,
     },
+
+  {
+    "projekt0n/github-nvim-theme",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme github_dark_default") -- choose the specific variant
+    end,
+  }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
