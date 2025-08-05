@@ -52,6 +52,9 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
+vim.opt.wrap = false
+vim.opt.swapfile = false
+
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -191,14 +194,19 @@ require("lazy").setup({
       end,
     },
 
-  {
-    "projekt0n/github-nvim-theme",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd("colorscheme github_dark_default") -- choose the specific variant
-    end,
-  }
+    {
+      "projekt0n/github-nvim-theme",
+      lazy = false,
+      priority = 1000,
+      config = function()
+        vim.cmd("colorscheme github_dark_default") -- choose the specific variant
+      end,
+    },
+
+    {
+      "mason-org/mason.nvim",
+      opts = {}
+    }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
