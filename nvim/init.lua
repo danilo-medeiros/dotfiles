@@ -112,6 +112,16 @@ vim.api.nvim_create_user_command("LineRepo", function(opts)
 	print("Copied: " .. result)
 end, { range = true })
 
+vim.api.nvim_create_user_command("R", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  if vim.api.nvim_buf_is_loaded(bufnr) and vim.api.nvim_buf_get_name(bufnr) ~= "" then
+    vim.cmd("e")
+    vim.cmd("Gitsigns refresh")
+    print("Refreshed")
+  end
+end, {})
+
 -- Keybinds to make tab navigation easier.
 vim.keymap.set("n", "<C-t>", "<cmd>tabnew<CR>", { desc = "Open new tab" })
 vim.keymap.set("n", "<right>", ":tabnext<CR>", { noremap = true, silent = true })
@@ -145,6 +155,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     os.exit(1)
   end
 end
+
 vim.opt.rtp:prepend(lazypath)
 
 -- Setup lazy.nvim
@@ -219,3 +230,4 @@ require("gitsigns").setup({
 -- TODO: Fix diagnostic mode
 require("lspconfig").pyright.setup({})
 
+vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
