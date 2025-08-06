@@ -216,6 +216,6 @@ require("gitsigns").setup({
   current_line_blame = true
 })
 
-# TODO: Fix diagnostic mode
+-- TODO: Fix diagnostic mode
 require("lspconfig").pyright.setup({})
 

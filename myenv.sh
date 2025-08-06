@@ -1,3 +1,7 @@
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+eval "$(zoxide init zsh)"
+alias cd=z
+
 codeview() {
     z $1 || return 1
     tmux split-window -h
