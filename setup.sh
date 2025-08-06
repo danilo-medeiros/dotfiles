@@ -12,3 +12,5 @@ brew install nvim
 brew install fzf
 brew install tmux
 brew install asdf
+brew install zsh-autosuggestions
+
