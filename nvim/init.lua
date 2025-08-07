@@ -5,7 +5,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 
 vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
+  vim.opt.clipboard = "unnamedplus"
 end)
 
 -- Enable break indent
@@ -66,50 +66,50 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 vim.keymap.set("n", "<C-v>", "<C-w><C-v>", { desc = "Split tab vertically" })
 
 local get_relative_path = function()
-	local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.")
-	return path
+  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.")
+  return path
 end
 
 local get_relative_path_with_line = function()
-	local path = get_relative_path()
-	local linenr = vim.api.nvim_win_get_cursor(0)[1]
-	return path .. ":" .. linenr
+  local path = get_relative_path()
+  local linenr = vim.api.nvim_win_get_cursor(0)[1]
+  return path .. ":" .. linenr
 end
 
 -- Copy the current file path to the clipboard.
 vim.api.nvim_create_user_command("Path", function()
-	local path = get_relative_path()
-	vim.fn.setreg("+", path)
-	print("Copied: " .. path)
+  local path = get_relative_path()
+  vim.fn.setreg("+", path)
+  print("Copied: " .. path)
 end, {})
 
 -- Copy the current file path and line number to the clipboard
 vim.api.nvim_create_user_command("Line", function()
-	local result = get_relative_path_with_line()
-	vim.fn.setreg("+", result)
-	print("Copied: " .. result)
+  local result = get_relative_path_with_line()
+  vim.fn.setreg("+", result)
+  print("Copied: " .. result)
 end, {})
 
 -- Copy the current file path and line range to the clipboard, formatted for GitHub.
 vim.api.nvim_create_user_command("LineRepo", function(opts)
-	local repo = vim.trim(
-		vim.fn.system("git remote get-url origin | sed -e 's#git@github.com:#https://github.com/#' -e 's/\\.git$//'")
-	)
-	local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.")
-	-- If the start line is different than 0, use the line range
-	-- Otherwise, use the cursor line
-	local start_line = vim.fn.line("'<")
-	local end_line = vim.fn.line("'>")
-	local line_range = "#L" .. start_line .. "-L" .. end_line
+  local repo = vim.trim(
+    vim.fn.system("git remote get-url origin | sed -e 's#git@github.com:#https://github.com/#' -e 's/\\.git$//'")
+  )
+  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.")
+  -- If the start line is different than 0, use the line range
+  -- Otherwise, use the cursor line
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+  local line_range = "#L" .. start_line .. "-L" .. end_line
 
-	if opts.range == 0 then
-		line_range = "#L" .. vim.api.nvim_win_get_cursor(0)[1]
-	end
+  if opts.range == 0 then
+    line_range = "#L" .. vim.api.nvim_win_get_cursor(0)[1]
+  end
 
-	local branch = vim.trim(vim.fn.system("git branch --show-current"))
-	local result = repo .. "/blob/" .. branch .. "/" .. path .. line_range
-	vim.fn.setreg("+", result)
-	print("Copied: " .. result)
+  local branch = vim.trim(vim.fn.system("git branch --show-current"))
+  local result = repo .. "/blob/" .. branch .. "/" .. path .. line_range
+  vim.fn.setreg("+", result)
+  print("Copied: " .. result)
 end, { range = true })
 
 vim.api.nvim_create_user_command("R", function()
@@ -134,10 +134,10 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 -- Fugitive
 vim.keymap.set(
-	"n",
-	"<leader>gb",
-	":Git blame<CR>",
-	{ noremap = true, silent = true, desc = "Show blame for current buffer" }
+  "n",
+  "<leader>gb",
+  ":Git blame<CR>",
+  { noremap = true, silent = true, desc = "Show blame for current buffer" }
 )
 
 -- Bootstrap lazy.nvim
@@ -188,17 +188,12 @@ require("lazy").setup({
       build = ':TSUpdate',
       lazy = false,
       opts = {
-        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'query', 'vim', 'vimdoc', 'javascript', 'python'},
-        -- Autoinstall languages that are not installed
+        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'query', 'vim', 'vimdoc', 'javascript', 'python', 'javascript' },
         auto_install = true,
         highlight = {
           enable = true,
-          -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-          --  If you are experiencing weird indenting issues, add the language to
-          --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-          additional_vim_regex_highlighting = { 'ruby' },
         },
-        indent = { enable = true, disable = { 'ruby' } },
+        indent = { enable = true },
       },
       config = function(_, opts)
         require('nvim-treesitter.configs').setup(opts)
@@ -214,7 +209,23 @@ require("lazy").setup({
       end,
     },
 
-    { "neovim/nvim-lspconfig" },
+    {
+      "neovim/nvim-lspconfig",
+      config = function()
+        require("lspconfig").pyright.setup({})
+        require("lspconfig").lua_ls.setup({})
+        require("lspconfig").ts_ls.setup({})
+        require("lspconfig").gopls.setup({})
+
+        vim.lsp.config("elixirls", {
+          cmd = { "/Users/dmedeiros/.local/share/elixir-ls/language_server.sh" };
+        })
+
+        vim.lsp.enable("elixirls")
+
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+      end
+    },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -227,7 +238,5 @@ require("gitsigns").setup({
   current_line_blame = true
 })
 
--- TODO: Fix diagnostic mode
-require("lspconfig").pyright.setup({})
-
 vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
+vim.diagnostic.config({ virtual_text = true })
