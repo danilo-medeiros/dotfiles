@@ -217,6 +217,8 @@ require("lazy").setup({
         require("lspconfig").pyright.setup({})
         require("lspconfig").lua_ls.setup({})
         require("lspconfig").ts_ls.setup({})
+
+        -- Install gopls with `go install golang.org/x/tools/gopls@latest`
         require("lspconfig").gopls.setup({})
 
         vim.lsp.config("elixirls", {
