@@ -29,5 +29,7 @@ bindings = [
 { key = "PageDown", mods = "Shift", action = "ScrollLineDown" },
 { key = "Tab", mods = "Control",       chars = "\u001b[1;5I" }, # Ctrl+Tab
 { key = "Tab", mods = "Control|Shift", chars = "\u001b[1;6I" }, # Ctrl+Shift+Tab
+{ key = "Left", mods = "Alt", chars = "\u001bb" },
+{ key = "Right", mods = "Alt", chars = "\u001bf" },
 ]
 

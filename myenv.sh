@@ -4,7 +4,7 @@ alias cd=z
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-codeview() {
+c() {
     z $1 || return 1
     tmux split-window -h
     tmux send-keys -t 1 'git status' Enter
