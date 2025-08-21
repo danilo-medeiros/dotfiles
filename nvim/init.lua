@@ -164,7 +164,7 @@ require("lazy").setup({
     {
       'ibhagwan/fzf-lua',
       config = function()
-        vim.keymap.set('n', '<C-p>', require('fzf-lua').files)
+        vim.keymap.set('n', '<C-p>', require('fzf-lua').git_files)
         vim.keymap.set('n', '<C-g>', require('fzf-lua').live_grep)
       end,
     },
@@ -212,13 +212,17 @@ require("lazy").setup({
     {
       "neovim/nvim-lspconfig",
       config = function()
+        vim.lsp.set_log_level("debug")
+
         require("lspconfig").pyright.setup({})
         require("lspconfig").lua_ls.setup({})
         require("lspconfig").ts_ls.setup({})
         require("lspconfig").gopls.setup({})
 
         vim.lsp.config("elixirls", {
-          cmd = { "/Users/dmedeiros/.local/share/elixir-ls/language_server.sh" };
+          -- Download elixir-ls on https://github.com/elixir-lsp/elixir-ls/releases/latest/
+          -- Unzip and move to ~/.local/share/elixir-ls
+          cmd = { vim.fn.expand("~/.local/share/elixir-ls/language_server.sh") };
         })
 
         vim.lsp.enable("elixirls")
