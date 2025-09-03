@@ -205,7 +205,7 @@ require("lazy").setup({
       lazy = false,
       priority = 1000,
       config = function()
-        vim.cmd("colorscheme github_dark_default") -- choose the specific variant
+        vim.cmd("colorscheme github_light") -- choose the specific variant
       end,
     },
 
@@ -235,7 +235,9 @@ require("lazy").setup({
 
     {
       "github/copilot.vim"
-    }
+    },
+
+    {'akinsho/git-conflict.nvim', version = "*", config = true}
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
