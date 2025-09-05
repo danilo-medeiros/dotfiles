@@ -52,7 +52,7 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
-vim.opt.wrap = false
+vim.opt.wrap = true
 vim.opt.swapfile = false
 
 -- Keybinds to make split navigation easier.
@@ -221,13 +221,17 @@ require("lazy").setup({
         -- Install gopls with `go install golang.org/x/tools/gopls@latest`
         require("lspconfig").gopls.setup({})
 
-        vim.lsp.config("elixirls", {
+        require("lspconfig").elixirls.setup({
           -- Download elixir-ls on https://github.com/elixir-lsp/elixir-ls/releases/latest/
           -- Unzip and move to ~/.local/share/elixir-ls
-          cmd = { vim.fn.expand("~/.local/share/elixir-ls/language_server.sh") };
+          cmd = { vim.fn.expand("~/.local/share/elixir-ls/language_server.sh") },
+          settings = {
+            elixirLS = {
+              dialyzerEnabled = false,
+              fetchDeps = false,
+            },
+          },
         })
-
-        vim.lsp.enable("elixirls")
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       end
