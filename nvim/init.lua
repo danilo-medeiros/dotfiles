@@ -213,6 +213,7 @@ require("lazy").setup({
       "neovim/nvim-lspconfig",
       config = function()
         vim.lsp.set_log_level("debug")
+        vim.lsp.log.set_format_func(vim.inspect)
 
         require("lspconfig").pyright.setup({})
         require("lspconfig").lua_ls.setup({})
@@ -251,7 +252,13 @@ require("lazy").setup({
 })
 
 require("gitsigns").setup({
-  current_line_blame = true
+  current_line_blame = true,
+
+  on_attach = function(bufnr)
+    local gs = require("gitsigns")
+    vim.keymap.set("n", "gn", gs.next_hunk)
+    vim.keymap.set("n", "gp", gs.prev_hunk)
+  end
 })
 
 vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
