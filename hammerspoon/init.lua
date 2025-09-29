@@ -16,7 +16,8 @@ local bindings = {
   {key = "n", app = "Notes"},
   {key = "i", app = "IntelliJ IDEA CE"},
   {key = "v", app = "Visual Studio Code"},
-  {key = "m", app = "Mail"}
+  {key = "m", app = "Mail"},
+  {key = "w", app = "WhatsApp"}
 }
 
 -- bind each app to its key
