@@ -1,4 +1,4 @@
-local leader = hs.hotkey.modal.new("ctrl", "space")
+local leader = hs.hotkey.modal.new("Ctrl", "Return")
 
 hs.grid.setGrid("2x2")
 hs.grid.setMargins("0x0")
