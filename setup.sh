@@ -13,6 +13,7 @@ brew install fzf
 brew install tmux
 brew install asdf
 brew install zsh-autosuggestions
+brew install ripgrep
 
 brew install lua-language-server
 

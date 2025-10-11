@@ -235,6 +235,7 @@ require("lazy").setup({
         })
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
       end
     },
 
