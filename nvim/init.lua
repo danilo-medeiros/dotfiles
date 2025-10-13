@@ -77,21 +77,21 @@ local get_relative_path_with_line = function()
 end
 
 -- Copy the current file path to the clipboard.
-vim.api.nvim_create_user_command("Path", function()
+vim.api.nvim_create_user_command("P", function()
   local path = get_relative_path()
   vim.fn.setreg("+", path)
   print("Copied: " .. path)
 end, {})
 
 -- Copy the current file path and line number to the clipboard
-vim.api.nvim_create_user_command("Line", function()
+vim.api.nvim_create_user_command("L", function()
   local result = get_relative_path_with_line()
   vim.fn.setreg("+", result)
   print("Copied: " .. result)
 end, {})
 
 -- Copy the current file path and line range to the clipboard, formatted for GitHub.
-vim.api.nvim_create_user_command("LineRepo", function(opts)
+vim.api.nvim_create_user_command("G", function(opts)
   local repo = vim.trim(
     vim.fn.system("git remote get-url origin | sed -e 's#git@github.com:#https://github.com/#' -e 's/\\.git$//'")
   )
@@ -110,6 +110,9 @@ vim.api.nvim_create_user_command("LineRepo", function(opts)
   local result = repo .. "/blob/" .. branch .. "/" .. path .. line_range
   vim.fn.setreg("+", result)
   print("Copied: " .. result)
+
+  -- Open on browser
+  vim.fn.system("open " .. result)
 end, { range = true })
 
 vim.api.nvim_create_user_command("R", function()
@@ -122,8 +125,22 @@ vim.api.nvim_create_user_command("R", function()
   end
 end, {})
 
+vim.api.nvim_create_user_command("PRs", function()
+  local repo = vim.trim(
+    vim.fn.system("git remote get-url origin | sed -e 's#git@github.com:#https://github.com/#' -e 's/\\.git$//'")
+  )
+  local result = repo .. "/pulls/danilo-medeiros"
+  -- Open on browser
+  vim.fn.system("open " .. result)
+  print("Opened: " .. result)
+end, { desc = "Open my PRs on this repository" })
+
 -- Keybinds to make tab navigation easier.
-vim.keymap.set("n", "<C-t>", "<cmd>tabnew<CR>", { desc = "Open new tab" })
+vim.keymap.set("n", "<C-t>", function()
+  vim.cmd("tabnew")
+  require('fzf-lua').files()
+end, { desc = "Open new tab and search files" })
+
 vim.keymap.set("n", "<right>", ":tabnext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<left>", ":tabprevious<CR>", { noremap = true, silent = true })
 -- Close the current tab
@@ -244,6 +261,12 @@ require("lazy").setup({
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
+
+        -- open definition on vertical split
+        vim.keymap.set("n", "vgd", function()
+          vim.cmd("vsplit")
+          vim.lsp.buf.definition()
+        end, {})
       end
     },
 
