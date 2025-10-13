@@ -33,3 +33,5 @@ bindings = [
 { key = "Right", mods = "Alt", chars = "\u001bf" },
 ]
 
+[mouse]
+hide_when_typing = true

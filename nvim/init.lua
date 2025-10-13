@@ -164,7 +164,7 @@ require("lazy").setup({
     {
       'ibhagwan/fzf-lua',
       config = function()
-        vim.keymap.set('n', '<C-p>', require('fzf-lua').git_files)
+        vim.keymap.set('n', '<C-p>', require('fzf-lua').files)
         vim.keymap.set('n', '<C-g>', require('fzf-lua').live_grep)
       end,
     },
@@ -216,7 +216,15 @@ require("lazy").setup({
         vim.lsp.log.set_format_func(vim.inspect)
 
         require("lspconfig").pyright.setup({})
-        require("lspconfig").lua_ls.setup({})
+        require("lspconfig").lua_ls.setup({
+          settings = {
+            Lua = {
+              diagnostics = {
+                globals = { "vim" },
+              },
+            },
+          },
+        })
         require("lspconfig").ts_ls.setup({})
 
         -- Install gopls with `go install golang.org/x/tools/gopls@latest`
