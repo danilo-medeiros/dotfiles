@@ -135,6 +135,28 @@ vim.api.nvim_create_user_command("PRs", function()
   print("Opened: " .. result)
 end, { desc = "Open my PRs on this repository" })
 
+vim.api.nvim_create_user_command("Ticket", function(opts)
+  local branch = vim.trim(vim.fn.system("git branch --show-current"))
+  local ticket = string.match(branch, "%u+%-%d+")
+
+  if ticket == nil then
+    print("No ticket found on branch name")
+    return
+  end
+
+  -- get pms_base_url from environment variable
+  local pms_base_url = os.getenv("PMS_BASE_URL")
+
+  if pms_base_url == nil then
+    print("PMS_BASE_URL environment variable not set")
+    return
+  end
+
+  local pms_url = pms_base_url .. ticket
+  vim.fn.system("open " .. pms_url)
+  print("Opened: " .. pms_url)
+end, { desc = "Open ticket on Project Management System" })
+
 -- Keybinds to make tab navigation easier.
 vim.keymap.set("n", "<C-t>", function()
   vim.cmd("tabnew")
