@@ -157,6 +157,63 @@ vim.api.nvim_create_user_command("Ticket", function(opts)
   print("Opened: " .. pms_url)
 end, { desc = "Open ticket on Project Management System" })
 
+vim.api.nvim_create_user_command("GC", function()
+  -- Get the current file path relative to git root
+  local file_path = vim.fn.expand('%:.')
+
+  -- Get the current line number
+  local line_number = vim.fn.line('.')
+
+  -- Get the commit hash for the current line using git blame
+  local blame_cmd = string.format('git blame -L %d,%d --porcelain "%s"', line_number, line_number, file_path)
+  local blame_output = vim.fn.system(blame_cmd)
+
+  -- Extract the commit hash (first 40 characters of the first line)
+  local commit_hash = blame_output:match('^(%x+)')
+
+  if not commit_hash or commit_hash == '' then
+    print('Could not find commit for current line')
+    return
+  end
+
+  -- Check if it's an uncommitted change
+  if commit_hash:match('^0+$') then
+    print('Current line has uncommitted changes')
+    return
+  end
+
+  -- Get the remote URL
+  local remote_url = vim.fn.system('git config --get remote.origin.url'):gsub('%s+', '')
+
+  if remote_url == '' then
+    print('Could not find git remote URL')
+    return
+  end
+
+  -- Convert SSH URL to HTTPS if needed
+  remote_url = remote_url:gsub('git@github%.com:', 'https://github.com/')
+  remote_url = remote_url:gsub('%.git$', '')
+
+  -- Construct the GitHub commit URL
+  local github_url = string.format('%s/commit/%s', remote_url, commit_hash)
+
+  -- Open the URL in the default browser
+  local open_cmd
+  if vim.fn.has('mac') == 1 then
+    open_cmd = 'open'
+  elseif vim.fn.has('unix') == 1 then
+    open_cmd = 'xdg-open'
+  elseif vim.fn.has('win32') == 1 then
+    open_cmd = 'start'
+  else
+    print('Unsupported operating system')
+    return
+  end
+
+  vim.fn.system(string.format('%s "%s"', open_cmd, github_url))
+  print('Opening: ' .. github_url)
+end, { desc = "Open GitHub commit for current line" })
+
 -- Keybinds to make tab navigation easier.
 vim.keymap.set("n", "<C-t>", function()
   vim.cmd("tabnew")
