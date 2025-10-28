@@ -4,12 +4,3 @@ alias cd=z
 
 ulimit -n 64000
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-c() {
-    z $1 || return 1
-    tmux split-window -h
-    tmux send-keys -t 1 'git status' Enter
-    tmux split-window -v
-    tmux select-pane -L
-    nvim README.md
-}
