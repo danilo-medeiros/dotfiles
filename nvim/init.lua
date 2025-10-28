@@ -310,9 +310,13 @@ require("lazy").setup({
       config = function()
         vim.lsp.set_log_level("debug")
         vim.lsp.log.set_format_func(vim.inspect)
+        vim.lsp.enable('pyright')
+        vim.lsp.enable('lua_ls')
+        vim.lsp.enable('ts_ls')
+        vim.lsp.enable('gopls')
+        vim.lsp.enable('elixirls')
 
-        require("lspconfig").pyright.setup({})
-        require("lspconfig").lua_ls.setup({
+        vim.lsp.config['lua_ls'] = {
           settings = {
             Lua = {
               diagnostics = {
@@ -320,13 +324,9 @@ require("lazy").setup({
               },
             },
           },
-        })
-        require("lspconfig").ts_ls.setup({})
+        }
 
-        -- Install gopls with `go install golang.org/x/tools/gopls@latest`
-        require("lspconfig").gopls.setup({})
-
-        require("lspconfig").elixirls.setup({
+        vim.lsp.config['elixirls'] = {
           -- Download elixir-ls on https://github.com/elixir-lsp/elixir-ls/releases/latest/
           -- Unzip and move to ~/.local/share/elixir-ls
           cmd = { vim.fn.expand("~/.local/share/elixir-ls/language_server.sh") },
@@ -336,7 +336,7 @@ require("lazy").setup({
               fetchDeps = false,
             },
           },
-        })
+        }
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
