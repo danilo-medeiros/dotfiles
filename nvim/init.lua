@@ -4,6 +4,9 @@ vim.g.have_nerd_font = true
 -- Make line numbers default
 vim.opt.number = true
 
+-- relative line numbers
+vim.opt.relativenumber = true
+
 vim.schedule(function()
   vim.opt.clipboard = "unnamedplus"
 end)
