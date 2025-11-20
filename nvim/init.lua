@@ -318,6 +318,7 @@ require("lazy").setup({
         vim.lsp.enable('ts_ls')
         vim.lsp.enable('gopls')
         vim.lsp.enable('elixirls')
+        vim.lsp.enable('jdtls')
 
         vim.lsp.config['lua_ls'] = {
           settings = {

@@ -13,11 +13,12 @@ padding.y = 10
 
 [font]
 # normal.family = "MesloLGS Nerd Font Mono"
-normal.family = "CodeNewRoman Nerd Font"
+normal.family = "JetBrains Mono"
+normal.style = "Regular"
 # offset.y = 2
 
 #regular
-size = 16
+size = 15
 
 #for video
 # size = 35.0
