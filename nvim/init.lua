@@ -93,6 +93,13 @@ vim.api.nvim_create_user_command("L", function()
   print("Copied: " .. result)
 end, {})
 
+-- Git pull current branch
+vim.api.nvim_create_user_command("GP", function()
+  local branch = vim.trim(vim.fn.system("git branch --show-current"))
+  local result = vim.fn.system("git pull origin " .. branch)
+  print(result)
+end, {})
+
 -- Copy the current file path and line range to the clipboard, formatted for GitHub.
 vim.api.nvim_create_user_command("G", function(opts)
   local repo = vim.trim(
@@ -265,6 +272,8 @@ require("lazy").setup({
       config = function()
         vim.keymap.set('n', '<C-p>', require('fzf-lua').files)
         vim.keymap.set('n', '<C-g>', require('fzf-lua').live_grep)
+        vim.keymap.set('n', '<C-b>', require('fzf-lua').git_branches)
+        vim.keymap.set('n', '<C-s>', require('fzf-lua').git_status)
       end,
     },
 
@@ -369,10 +378,11 @@ require("lazy").setup({
 require("gitsigns").setup({
   current_line_blame = true,
 
-  on_attach = function(bufnr)
+  on_attach = function()
     local gs = require("gitsigns")
     vim.keymap.set("n", "gn", gs.next_hunk)
     vim.keymap.set("n", "gp", gs.prev_hunk)
+    vim.keymap.set("n", "gu", gs.reset_hunk)
   end
 })
 
