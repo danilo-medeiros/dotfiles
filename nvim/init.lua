@@ -68,6 +68,12 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 vim.keymap.set("n", "<C-v>", "<C-w><C-v>", { desc = "Split tab vertically" })
 
+vim.keymap.set("n", "K", function()
+  vim.lsp.buf.hover({
+    border = "single",
+  })
+end, { desc = "Show hover information" })
+
 local get_relative_path = function()
   local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.")
   return path
