@@ -4,6 +4,9 @@ vim.g.have_nerd_font = true
 -- Make line numbers default
 vim.opt.number = true
 
+-- Turn of "paging" behavior
+vim.opt.more = false
+
 -- relative line numbers
 vim.opt.relativenumber = true
 
@@ -319,13 +322,22 @@ require("lazy").setup({
       lazy = false,
       priority = 1000,
       config = function()
-        vim.cmd("colorscheme github_light") -- choose the specific variant
+        vim.cmd("colorscheme github_dark") -- choose the specific variant
       end,
     },
 
     {
       "neovim/nvim-lspconfig",
       config = function()
+        vim.lsp.config('ts_ls', {
+          cmd = {
+            '/Users/dmedeiros/.asdf/shims/node',
+            '/Users/dmedeiros/personal/language-servers/node_modules/typescript-language-server/lib/cli.mjs',
+            '--stdio'
+          },
+          root_dir = vim.fs.root(0, { 'package.json', 'tsconfig.json', 'jsconfig.json' }),
+        })
+
         vim.lsp.set_log_level("debug")
         vim.lsp.log.set_format_func(vim.inspect)
         vim.lsp.enable('pyright')
@@ -363,6 +375,12 @@ require("lazy").setup({
         -- open definition on vertical split
         vim.keymap.set("n", "vgd", function()
           vim.cmd("vsplit")
+          vim.lsp.buf.definition()
+        end, {})
+
+        -- open definition on new tab
+        vim.keymap.set("n", "tgd", function()
+          vim.cmd("tab split")
           vim.lsp.buf.definition()
         end, {})
       end
