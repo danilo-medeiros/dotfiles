@@ -1,5 +1,5 @@
 general.import = [
-  "~/.config/alacritty/themes/github_default.toml"
+  "~/.config/alacritty/themes/github_dark_dimmed.toml"
 ]
 
 [ env ]

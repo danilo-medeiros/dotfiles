@@ -322,7 +322,7 @@ require("lazy").setup({
       lazy = false,
       priority = 1000,
       config = function()
-        vim.cmd("colorscheme github_dark") -- choose the specific variant
+        vim.cmd("colorscheme github_dark_dimmed") -- choose the specific variant
       end,
     },
 
