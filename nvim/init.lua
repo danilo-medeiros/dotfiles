@@ -329,15 +329,6 @@ require("lazy").setup({
     {
       "neovim/nvim-lspconfig",
       config = function()
-        vim.lsp.config('ts_ls', {
-          cmd = {
-            '/Users/dmedeiros/.asdf/shims/node',
-            '/Users/dmedeiros/personal/language-servers/node_modules/typescript-language-server/lib/cli.mjs',
-            '--stdio'
-          },
-          root_dir = vim.fs.root(0, { 'package.json', 'tsconfig.json', 'jsconfig.json' }),
-        })
-
         vim.lsp.set_log_level("debug")
         vim.lsp.log.set_format_func(vim.inspect)
         vim.lsp.enable('pyright')
@@ -346,6 +337,12 @@ require("lazy").setup({
         vim.lsp.enable('gopls')
         vim.lsp.enable('elixirls')
         vim.lsp.enable('jdtls')
+
+        -- Enable Tailwind CSS LSP
+        vim.lsp.enable('tailwindcss')
+
+        -- Enable ESLint LSP
+        vim.lsp.enable('eslint')
 
         vim.lsp.config['lua_ls'] = {
           settings = {
