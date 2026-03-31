@@ -4,7 +4,7 @@ vim.g.have_nerd_font = true
 -- Make line numbers default
 vim.opt.number = true
 
--- Turn of "paging" behavior
+-- Turn off "paging" behavior
 vim.opt.more = false
 
 -- relative line numbers
@@ -105,6 +105,10 @@ end, {})
 -- Git pull current branch
 vim.api.nvim_create_user_command("GP", function()
   local branch = vim.trim(vim.fn.system("git branch --show-current"))
+  if branch == "" then
+    print("Not on a branch (detached HEAD)")
+    return
+  end
   local result = vim.fn.system("git pull origin " .. branch)
   print(result)
 end, {})
@@ -131,7 +135,7 @@ vim.api.nvim_create_user_command("G", function(opts)
   print("Copied: " .. result)
 
   -- Open on browser
-  vim.fn.system("open " .. result)
+  vim.fn.system({"open", result})
 end, { range = true })
 
 vim.api.nvim_create_user_command("R", function()
@@ -150,7 +154,7 @@ vim.api.nvim_create_user_command("PRs", function()
   )
   local result = repo .. "/pulls/danilo-medeiros"
   -- Open on browser
-  vim.fn.system("open " .. result)
+  vim.fn.system({"open", result})
   print("Opened: " .. result)
 end, { desc = "Open my PRs on this repository" })
 
@@ -172,7 +176,7 @@ vim.api.nvim_create_user_command("Ticket", function(opts)
   end
 
   local pms_url = pms_base_url .. ticket
-  vim.fn.system("open " .. pms_url)
+  vim.fn.system({"open", pms_url})
   print("Opened: " .. pms_url)
 end, { desc = "Open ticket on Project Management System" })
 
@@ -217,19 +221,7 @@ vim.api.nvim_create_user_command("GC", function()
   local github_url = string.format('%s/commit/%s', remote_url, commit_hash)
 
   -- Open the URL in the default browser
-  local open_cmd
-  if vim.fn.has('mac') == 1 then
-    open_cmd = 'open'
-  elseif vim.fn.has('unix') == 1 then
-    open_cmd = 'xdg-open'
-  elseif vim.fn.has('win32') == 1 then
-    open_cmd = 'start'
-  else
-    print('Unsupported operating system')
-    return
-  end
-
-  vim.fn.system(string.format('%s "%s"', open_cmd, github_url))
+  vim.fn.system({"open", github_url})
   print('Opening: ' .. github_url)
 end, { desc = "Open GitHub commit for current line" })
 
@@ -241,19 +233,10 @@ end, { desc = "Open new tab and search files" })
 
 vim.keymap.set("n", "<right>", ":tabnext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<left>", ":tabprevious<CR>", { noremap = true, silent = true })
--- Close the current tab
-vim.keymap.set("n", "<C-x>", "<cmd>tabclose<CR>", { desc = "Close current tab" })
+vim.keymap.set("n", "<C-x>", ":tabclose<CR>", { noremap = true, silent = true })
 
 -- Show File explorer
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-
--- Fugitive
-vim.keymap.set(
-  "n",
-  "<leader>gb",
-  ":Git blame<CR>",
-  { noremap = true, silent = true, desc = "Show blame for current buffer" }
-)
+vim.keymap.set("n", "<C-n>", ":Lexplore<CR>", { noremap = true, silent = true, desc = "Toggle file explorer in left split" })
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -297,6 +280,13 @@ require("lazy").setup({
           topdelete = { text = '‾' },
           changedelete = { text = '~' }
         },
+        current_line_blame = true,
+        on_attach = function()
+          local gs = require("gitsigns")
+          vim.keymap.set("n", "gn", gs.next_hunk, { desc = "Next git hunk" })
+          vim.keymap.set("n", "gp", gs.prev_hunk, { desc = "Previous git hunk" })
+          vim.keymap.set("n", "gu", gs.reset_hunk, { desc = "Reset git hunk" })
+        end,
       },
     },
 
@@ -305,7 +295,7 @@ require("lazy").setup({
       build = ':TSUpdate',
       lazy = false,
       opts = {
-        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'query', 'vim', 'vimdoc', 'javascript', 'python', 'javascript' },
+        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'query', 'vim', 'vimdoc', 'javascript', 'python' },
         auto_install = true,
         highlight = {
           enable = true,
@@ -329,8 +319,6 @@ require("lazy").setup({
     {
       "neovim/nvim-lspconfig",
       config = function()
-        vim.lsp.set_log_level("debug")
-        vim.lsp.log.set_format_func(vim.inspect)
         vim.lsp.enable('pyright')
         vim.lsp.enable('lua_ls')
         vim.lsp.enable('ts_ls')
@@ -366,20 +354,20 @@ require("lazy").setup({
           },
         }
 
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 
         -- open definition on vertical split
         vim.keymap.set("n", "vgd", function()
           vim.cmd("vsplit")
           vim.lsp.buf.definition()
-        end, {})
+        end, { desc = "Go to definition in vertical split" })
 
         -- open definition on new tab
         vim.keymap.set("n", "tgd", function()
           vim.cmd("tab split")
           vim.lsp.buf.definition()
-        end, {})
+        end, { desc = "Go to definition in new tab" })
       end
     },
 
@@ -394,17 +382,6 @@ require("lazy").setup({
   install = { colorscheme = { "habamax" } },
   -- automatically check for plugin updates
   checker = { enabled = false },
-})
-
-require("gitsigns").setup({
-  current_line_blame = true,
-
-  on_attach = function()
-    local gs = require("gitsigns")
-    vim.keymap.set("n", "gn", gs.next_hunk)
-    vim.keymap.set("n", "gp", gs.prev_hunk)
-    vim.keymap.set("n", "gu", gs.reset_hunk)
-  end
 })
 
 vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
