@@ -32,7 +32,9 @@ bindings = [
 { key = "Tab", mods = "Control|Shift", chars = "\u001b[1;6I" }, # Ctrl+Shift+Tab
 { key = "Left", mods = "Alt", chars = "\u001bb" },
 { key = "Right", mods = "Alt", chars = "\u001bf" },
+{ key = "Return", mods = "Shift", chars = "\u001B\r" }
 ]
 
 [mouse]
 hide_when_typing = true
+

@@ -320,6 +320,7 @@ require("lazy").setup({
       "neovim/nvim-lspconfig",
       config = function()
         vim.lsp.enable('pyright')
+        vim.lsp.enable('ruby_lsp')
         vim.lsp.enable('lua_ls')
         vim.lsp.enable('ts_ls')
         vim.lsp.enable('gopls')
@@ -356,6 +357,7 @@ require("lazy").setup({
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
 
         -- open definition on vertical split
         vim.keymap.set("n", "vgd", function()
