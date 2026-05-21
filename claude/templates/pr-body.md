@@ -13,7 +13,7 @@ Infer the ticket from the branch name (e.g. `abc-1361-...` → `ABC-1361`) or th
 ## Sections (in order)
 
 ### Summary
-One to two paragraphs on what changed and why. Intent and motivation — the diff covers mechanics. Avoid using lists.
+One to two paragraphs on what changed and why. Intent and motivation — the diff covers mechanics. Avoid using lists. Also avoid getting too technical or detailed — save that for the Key Changes and Notable Decisions sections. Focus on the "why" and "what" more than the "how". Skip if the title already makes the intent and motivation obvious.
 
 ### Notable decisions (optional)
 Only include if there are technical decisions a reviewer should know about — trade-offs taken, alternatives rejected, non-obvious choices. Skip the section entirely when there's nothing worth flagging. Format: short bullets, each a decision followed by a one-line rationale. This is about *why this approach*; leave *what could break* to Risks.
@@ -48,5 +48,7 @@ Only after every section is approved, assemble the final body and create or upda
 Write the body to a temp file with the `Write` tool, then invoke `gh pr create --draft --title "..." --body-file /tmp/pr-body.md`. New PRs are always created as drafts. Do NOT pass the body inline via `--body "..."` or a `"$(cat <<EOF ... EOF)"` substitution — those routes mangle backticks (they get backslash-escaped and render as `` \` `` in the published PR, breaking code spans; see e.g. PR #488 on `superlistapp/onsen`). `--body-file` reads the file verbatim, so backticks, dollar signs, and quotes all pass through untouched.
 
 When updating an existing PR, never convert it back to draft — even if the changes are substantial. Edit the title/body only (per the global CLAUDE.md rule) and leave the ready-for-review state alone.
+
+If the implementation is WIP, do not elaborate on what's incomplete in the PR body — a "WIP" prefix in the title is sufficient.
 
 Keep the title under 70 characters; defer details to the body.

@@ -388,3 +388,5 @@ require("lazy").setup({
 
 vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
 vim.diagnostic.config({ virtual_text = true })
+
+require("sticky_notes").setup()
