@@ -61,6 +61,11 @@ vim.opt.expandtab = true
 vim.opt.wrap = true
 vim.opt.swapfile = false
 
+-- Better diff highlighting: highlight only the changed characters on a line
+-- instead of the whole line, so syntax colors stay visible.
+vim.opt.diffopt:append("linematch:60")
+vim.opt.diffopt:append("algorithm:histogram")
+
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -147,6 +152,15 @@ vim.api.nvim_create_user_command("R", function()
     print("Refreshed")
   end
 end, {})
+
+vim.api.nvim_create_user_command("PR", function()
+  local result = vim.fn.system("gh pr view --web 2>&1")
+  if vim.v.shell_error ~= 0 then
+    print(vim.trim(result))
+    return
+  end
+  print("Opened PR for current branch")
+end, { desc = "Open the PR of the current branch in the browser" })
 
 vim.api.nvim_create_user_command("PRs", function()
   local repo = vim.trim(
@@ -377,7 +391,34 @@ require("lazy").setup({
       "github/copilot.vim"
     },
 
-    {'akinsho/git-conflict.nvim', version = "*", config = true}
+    {'nvim-tree/nvim-web-devicons', opts = {}},
+
+    {'akinsho/git-conflict.nvim', version = "*", config = true},
+
+    {
+      'sindrets/diffview.nvim',
+      opts = {
+        file_panel = {
+          win_config = function()
+            return {
+              position = "left",
+              width = math.floor(vim.o.columns * 0.3),
+            }
+          end,
+        },
+        hooks = {
+          diff_buf_read = function(bufnr)
+            vim.opt_local.foldenable = false
+          end,
+        },
+        keymaps = {
+          view = {
+            { "n", "gn", "]c", { desc = "Next hunk in file" } },
+            { "n", "gp", "[c", { desc = "Previous hunk in file" } },
+          },
+        },
+      },
+    }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -388,5 +429,21 @@ require("lazy").setup({
 
 vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
 vim.diagnostic.config({ virtual_text = true })
+
+-- Keep syntax highlighting on diff lines (no fg override) while using more
+-- vivid background tints than the dimmed theme provides.
+local diff_bgs = {
+  DiffAdd    = "#1f4d2b",
+  DiffChange = "#2a3f5f",
+  DiffDelete = "#5a1f1f",
+  DiffText   = "#3a6b48",
+}
+local function style_diff_groups()
+  for group, bg in pairs(diff_bgs) do
+    vim.api.nvim_set_hl(0, group, { bg = bg, fg = "NONE", ctermfg = "NONE" })
+  end
+end
+style_diff_groups()
+vim.api.nvim_create_autocmd("ColorScheme", { callback = style_diff_groups })
 
 require("sticky_notes").setup()

@@ -17,6 +17,8 @@ brew install ripgrep
 
 brew install lua-language-server
 
+brew install --cask font-jetbrains-mono-nerd-font
+
 npm install -g typescript typescript-language-server
 
 echo "source ~/workspace/dotfiles/myenv.sh" >> ~/.zshrc

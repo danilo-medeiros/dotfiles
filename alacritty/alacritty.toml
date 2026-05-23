@@ -12,8 +12,7 @@ padding.y = 10
 # decorations = "Buttonless"
 
 [font]
-# normal.family = "MesloLGS Nerd Font Mono"
-normal.family = "JetBrains Mono"
+normal.family = "JetBrainsMono Nerd Font"
 normal.style = "Regular"
 # offset.y = 2
 
