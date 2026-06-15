@@ -445,5 +445,3 @@ local function style_diff_groups()
 end
 style_diff_groups()
 vim.api.nvim_create_autocmd("ColorScheme", { callback = style_diff_groups })
-
-require("sticky_notes").setup()
