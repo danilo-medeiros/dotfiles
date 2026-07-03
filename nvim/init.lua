@@ -153,6 +153,11 @@ vim.api.nvim_create_user_command("R", function()
   end
 end, {})
 
+-- Open the diff of unstaged changes (working tree vs index)
+vim.api.nvim_create_user_command("D", function()
+  vim.cmd("DiffviewOpen")
+end, { desc = "Diff unstaged changes" })
+
 vim.api.nvim_create_user_command("PR", function()
   local result = vim.fn.system("gh pr view --web 2>&1")
   if vim.v.shell_error ~= 0 then
