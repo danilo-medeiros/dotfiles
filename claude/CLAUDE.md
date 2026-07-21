@@ -7,6 +7,8 @@
 
 When creating a PR, follow @templates/pr-body.md.
 
+- Keep PRs under ~500 lines; split larger work into multiple PRs.
+
 # PR reviews & descriptions
 
 - Do NOT include nit-level feedback in PR reviews unless explicitly asked
