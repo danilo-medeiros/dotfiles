@@ -177,6 +177,33 @@ vim.api.nvim_create_user_command("PRs", function()
   print("Opened: " .. result)
 end, { desc = "Open my PRs on this repository" })
 
+-- Fetch and checkout a PR, then open its diff against the target branch
+vim.api.nvim_create_user_command("Review", function(opts)
+  local pr_number = opts.args
+
+  print("Checking out PR #" .. pr_number .. "...")
+  vim.cmd("redraw")
+  local checkout_result = vim.fn.system("gh pr checkout " .. pr_number .. " 2>&1")
+  if vim.v.shell_error ~= 0 then
+    print(vim.trim(checkout_result))
+    return
+  end
+
+  print("Looking up target branch for PR #" .. pr_number .. "...")
+  vim.cmd("redraw")
+  local base_branch = vim.trim(vim.fn.system(
+    "gh pr view " .. pr_number .. " --json baseRefName --jq .baseRefName 2>&1"
+  ))
+  if vim.v.shell_error ~= 0 then
+    print(base_branch)
+    return
+  end
+
+  print("Opening diff against " .. base_branch .. "...")
+  vim.cmd("redraw")
+  vim.cmd("DiffviewOpen " .. base_branch .. "...HEAD")
+end, { nargs = 1, desc = "Checkout a PR and review its diff against the target branch" })
+
 vim.api.nvim_create_user_command("Ticket", function(opts)
   local branch = vim.trim(vim.fn.system("git branch --show-current"))
   local ticket = string.match(branch, "%u+%-%d+")
