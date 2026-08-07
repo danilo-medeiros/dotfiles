@@ -274,8 +274,8 @@ end, { desc = "Open GitHub commit for current line" })
 -- Keybinds to make tab navigation easier.
 vim.keymap.set("n", "<C-t>", function()
   vim.cmd("tabnew")
-  require('fzf-lua').files()
-end, { desc = "Open new tab and search files" })
+  -- require('fzf-lua').files()
+end, { desc = "Open new tab" })
 
 vim.keymap.set("n", "<right>", ":tabnext<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<left>", ":tabprevious<CR>", { noremap = true, silent = true })
@@ -358,7 +358,7 @@ require("lazy").setup({
       lazy = false,
       priority = 1000,
       config = function()
-        vim.cmd("colorscheme github_dark_dimmed") -- choose the specific variant
+        vim.cmd("colorscheme github_light") -- choose the specific variant
       end,
     },
 

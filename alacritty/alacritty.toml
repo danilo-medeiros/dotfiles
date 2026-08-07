@@ -1,5 +1,5 @@
 general.import = [
-  "~/.config/alacritty/themes/github_dark_dimmed.toml"
+  "~/.config/alacritty/themes/github_light.toml"
 ]
 
 [ env ]
@@ -18,7 +18,7 @@ normal.style = "Regular"
 # offset.y = 2
 
 #regular
-size = 16
+size = 15
 
 #for video
 # size = 35.0

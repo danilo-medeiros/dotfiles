@@ -23,5 +23,3 @@ npm install -g typescript typescript-language-server
 
 echo "source ~/workspace/dotfiles/myenv.sh" >> ~/.zshrc
 
-# Symlink Claude Code skills
-ln -sf ~/personal/dotfiles/claude/skills ~/.claude/skills
