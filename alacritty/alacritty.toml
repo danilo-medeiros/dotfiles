@@ -1,5 +1,5 @@
 general.import = [
-  "~/.config/alacritty/themes/github_light.toml"
+  "~/.config/alacritty/themes/one_light.toml"
 ]
 
 [ env ]
@@ -10,7 +10,7 @@ padding.x = 10
 padding.y = 0
 dynamic_padding = true
 
-# decorations = "Buttonless"
+decorations = "Buttonless"
 
 [font]
 normal.family = "JetBrainsMono Nerd Font"

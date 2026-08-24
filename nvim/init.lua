@@ -171,7 +171,13 @@ vim.api.nvim_create_user_command("PRs", function()
   local repo = vim.trim(
     vim.fn.system("git remote get-url origin | sed -e 's#git@github.com:#https://github.com/#' -e 's/\\.git$//'")
   )
-  local result = repo .. "/pulls/danilo-medeiros"
+  -- Ask gh who we are rather than hardcoding a username.
+  local user = vim.trim(vim.fn.system("gh api user --jq .login 2>&1"))
+  if vim.v.shell_error ~= 0 then
+    print("Could not determine GitHub user: " .. user)
+    return
+  end
+  local result = repo .. "/pulls/" .. user
   -- Open on browser
   vim.fn.system({"open", result})
   print("Opened: " .. result)
