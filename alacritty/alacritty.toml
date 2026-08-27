@@ -1,6 +1,8 @@
-general.import = [
+[general]
+import = [
   "~/.config/alacritty/themes/one_light.toml"
 ]
+live_config_reload = true
 
 [ env ]
 # TERM = "xterm-256color"
@@ -9,19 +11,12 @@ general.import = [
 padding.x = 10
 padding.y = 0
 dynamic_padding = true
-
-decorations = "Buttonless"
+decorations = "none"
 
 [font]
 normal.family = "JetBrainsMono Nerd Font"
 normal.style = "Regular"
-# offset.y = 2
-
-#regular
 size = 15
-
-#for video
-# size = 35.0
 
 [keyboard]
 bindings = [

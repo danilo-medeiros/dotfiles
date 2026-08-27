@@ -20,7 +20,8 @@ When creating a PR, follow @templates/pr-body.md.
 
 - When referencing code in a Jira ticket, GitHub PR, or Slack message, always link the path to its GitHub URL, e.g. `[path/to/some/code.sh](https://github.com/the/project/blob/branch/path/to/some/code.sh)` instead of a bare path.
 - When referencing an external source by identifier (e.g. incident id/number, Jira ticket id/number, GitHub PR number, Slack message), always link to the source instead of just writing the identifier. For example, use `[TICKET-1234](https://jira.com/incidents/TICKET-1234)`.
-- When preparing a message to send to an external party (e.g. Slack), create a draft first. Never send a message to an external party without explicit approval from me.
+- When I ask for a Slack message (draft, reply, "help me write…"), always create it as a Slack draft with `slack_send_message_draft` (pass `thread_ts` when replying to a thread) — don't wait for me to ask for the draft. Show me the text in the conversation as well. If the draft tool is unavailable, say so and give me paste-ready text instead.
+- Never send a message to an external party without explicit approval from me — creating a draft is always fine (I review and send it myself), calling `slack_send_message` is not.
 
 # Development
 
