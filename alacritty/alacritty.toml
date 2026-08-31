@@ -4,17 +4,13 @@ import = [
 ]
 live_config_reload = true
 
-[ env ]
-# TERM = "xterm-256color"
-
 [window]
 padding.x = 10
 padding.y = 0
 dynamic_padding = true
-decorations = "none"
 
 [font]
-normal.family = "JetBrainsMono Nerd Font"
+normal.family = "Hack Nerd Font Mono"
 normal.style = "Regular"
 size = 15
 

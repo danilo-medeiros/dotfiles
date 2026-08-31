@@ -121,10 +121,10 @@ for f in "${formulae[@]}"; do
 done
 
 log "Installing casks"
-if brew list --cask font-jetbrains-mono-nerd-font >/dev/null 2>&1; then
-  skip "ok: font-jetbrains-mono-nerd-font"
+if brew list --cask font-hack-nerd-font >/dev/null 2>&1; then
+  skip "ok: font-hack-nerd-font"
 else
-  brew install --cask font-jetbrains-mono-nerd-font
+  brew install --cask font-hack-nerd-font
 fi
 
 # ---------------------------------------------------------------------------
