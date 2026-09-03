@@ -18,13 +18,13 @@ One to two paragraphs on what changed and why. Intent and motivation — the dif
 ### Notable decisions (optional)
 Only include if there are technical decisions a reviewer should know about — trade-offs taken, alternatives rejected, non-obvious choices. Skip the section entirely when there's nothing worth flagging. Format: short bullets, each a decision followed by a one-line rationale. This is about *why this approach*; leave *what could break* to Risks.
 
-### Key changes
+### Key changes (optional)
 Highlights only — the logical changes a reviewer needs to understand, not a file-by-file list (the diff covers that). Group by area or intent when it helps. Skip if the Summary already makes the changes obvious.
 
-### Risks
+### Risks (optional)
 What could break or regress: behavior changes for callers, performance, migrations, flags, rollback. If the risk is genuinely negligible, say so and why — don't leave it empty.
 
-### Testing
+### Testing (optional)
 Manual verification steps only — flows a human runs by hand, ideally in a test/staging environment against a real build. Do NOT list automated tests of any kind (unit, integration, e2e, snapshot, etc.); CI runs those and they don't belong here. Concrete, runnable steps with URLs, inputs, and expected results — for both the author (who will self-review the PR) and the reviewer. Use `- [x]` for steps already performed and `- [ ]` for steps still to run, regardless of who runs them. Only check off steps that were actually performed — don't pad with claims that weren't verified.
 
 ### Follow-ups (optional)
@@ -37,7 +37,7 @@ For new PRs and full rewrites of an existing PR body, draft the body one section
 For each section in the order listed above:
 
 1. Draft the section's content.
-2. Present it via `AskUserQuestion` with options `Approve`, `Revise`, and `Skip section` (use `Skip section` only for sections marked optional). Include the drafted content in the question text so it's reviewable in place.
+2. Present it via `AskUserQuestion` with options `Approve`, `Revise`, and `Skip section`. Include the drafted content in the question text so it's reviewable in place.
 3. On `Approve`, move to the next section. On `Revise`, incorporate the feedback and re-present. On `Skip section`, drop it and move on.
 4. Also propose the PR title the same way (Approve / Revise) before invoking `gh`.
 
