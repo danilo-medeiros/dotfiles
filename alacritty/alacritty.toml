@@ -10,7 +10,7 @@ padding.y = 0
 dynamic_padding = true
 
 [font]
-normal.family = "Hack Nerd Font Mono"
+normal.family = "JetBrainsMono Nerd Font"
 normal.style = "Regular"
 size = 15
 
