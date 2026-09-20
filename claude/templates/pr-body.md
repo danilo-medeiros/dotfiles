@@ -10,6 +10,15 @@ Ticket: [TICKET-123](https://link-to-ticket)
 
 Infer the ticket from the branch name (e.g. `abc-1361-...` → `ABC-1361`) or the latest commit message. If none can be inferred, ask before creating the PR — do not omit or guess.
 
+## Second question: drafting mode
+
+After the ticket is settled, ask via `AskUserQuestion` how to draft the body, with options:
+
+- `Section by section` — draft and approve one section at a time (see Iterative drafting).
+- `All at once` — draft every section, then present the full body once for approval.
+
+Ask this only for new PRs and full rewrites; skip it for small targeted edits.
+
 ## Sections (in order)
 
 ### Summary
@@ -32,7 +41,7 @@ Only include if there's deferred work or out-of-scope items a reviewer genuinely
 
 ## Iterative drafting
 
-For new PRs and full rewrites of an existing PR body, draft the body one section at a time and get approval before moving on. (Skip this flow for small targeted edits to an existing PR — go straight to the edit.)
+Use this flow when `Section by section` was chosen. For `All at once`, draft every section plus the title, present the assembled body in one message, and iterate on it as a whole until approved.
 
 For each section in the order listed above:
 
