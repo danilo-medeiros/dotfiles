@@ -32,3 +32,4 @@ When creating a PR, follow @templates/pr-body.md.
 # Development
 
 - When writing code to a new repository that is not cloned yet, clone it into the ~/workspace directory
+- When doing a static change (e.g. constants, config) do not add a test for it unless it is a critical change that could break the system. If it is a critical change, add a test for it.
