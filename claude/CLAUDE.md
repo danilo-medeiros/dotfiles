@@ -33,3 +33,11 @@ When creating a PR, follow @templates/pr-body.md.
 
 - When writing code to a new repository that is not cloned yet, clone it into the ~/workspace directory
 - When doing a static change (e.g. constants, config) do not add a test for it unless it is a critical change that could break the system. If it is a critical change, add a test for it.
+
+# Claude Code settings (`~/.claude/settings.json`)
+
+- Treat this file as critical: it holds permissions, hooks, autoMode rules and UI settings, and it is not in version control.
+- Before any change, copy it to `~/.claude/settings.json.bak.<timestamp>` and show me the diff after.
+- Change only the keys I asked for; never rewrite or regenerate the whole file.
+- Never write it from scripts or background jobs. Claude Code rewrites it while running, and a concurrent write can wipe it.
+- Write atomically (temp file + `mv`), never truncate-then-write (`cat >`, `>`).
